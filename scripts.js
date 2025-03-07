@@ -7,7 +7,7 @@ const category = document.getElementById("category")
 // Seleciona o elemento da lista de despesas
 const expenseList = document.querySelector("ul")
 const expenseQuantity = document.querySelector("aside header p span")
-const expenseTotal = document.querySelector("aside header h2")
+const expensesTotal = document.querySelector("aside header h2")
 
 
 // Captura o evento de input para formatar o valor
@@ -106,7 +106,7 @@ function expenseAdd(newExpense) {
   }
 }
 
-
+// Atualiza os totais
 function updateTotals() {
   try {
     // Recupera todos os itens (li) da lista
@@ -129,7 +129,7 @@ function updateTotals() {
       value = parseFloat(value)
 
       // Verifica se é um número válido
-      if (!isNaN(value)) {
+      if (isNaN(value)) {
         return alert("Não foi possível calcular o valor total. O valor não parece ser um número")
 
       }
@@ -146,12 +146,23 @@ function updateTotals() {
     total = formatCurrencyBRL(total).toUpperCase().replace("R$", "")
 
     // Limpa o conteúdo do elemento
-    expenseTotal.innerHTML = `<small>R$</small>${total}`
+    expensesTotal.innerHTML = ""
 
     // Adiciona o símbolo da moeda e valor total formatado
-    expenseTotal.append(symbolBRL, total)
+    expensesTotal.append(symbolBRL, total)
   } catch (error) {
     console.log(error)
     alert("Não foi possível atualizar os totais.")
   }
 }
+
+// Evento que captura o clique nos itens da lista
+expenseList.addEventListener("click", (event) => {
+  // Verifica se o elemento clicado é o ícone de remover
+  if (event.target.classList.contains("remove-icon")) {
+    // Remove o item da lista
+    event.target.parentElement.remove()
+  } else {
+    alert("O clique foi no item da despesa, não no botão de remover.")
+  } 
+})
